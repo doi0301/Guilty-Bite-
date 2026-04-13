@@ -53,9 +53,10 @@ export function Modal({ isOpen, onClose, children }: ModalProps) {
             exit={{ y: '100%', opacity: 0.8 }}
             transition={{ type: 'spring', damping: 28, stiffness: 300 }}
             className="
-              relative z-10 w-full max-h-[90vh] overflow-y-auto
-              rounded-t-3xl bg-bg-primary shadow-2xl
-              lg:max-w-md lg:rounded-3xl lg:my-auto
+              relative z-10 w-full max-h-[85vh] overflow-y-auto
+              rounded-t-3xl bg-bg-primary pt-0 shadow-2xl
+              pb-[max(1.5rem,env(safe-area-inset-bottom,0px))]
+              lg:my-auto lg:max-w-md lg:rounded-3xl
             "
           >
             {/* Drag handle for mobile */}

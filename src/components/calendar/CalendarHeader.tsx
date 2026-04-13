@@ -18,8 +18,8 @@ export function CalendarHeader({
   onToday,
 }: CalendarHeaderProps) {
   return (
-    <div className="flex items-center justify-between px-2 py-4">
-      <div className="flex items-center gap-3">
+    <div className="flex min-w-0 items-center justify-between gap-2 px-1 py-4 sm:px-2">
+      <div className="flex min-w-0 flex-1 items-center gap-1 sm:gap-3">
         <button
           onClick={onPrevMonth}
           aria-label="이전 월"
@@ -32,7 +32,7 @@ export function CalendarHeader({
 
         <button
           onClick={onToday}
-          className="text-lg font-bold text-text-primary transition hover:text-coral md:text-xl"
+          className="min-w-0 truncate text-base font-bold text-text-primary transition hover:text-coral sm:text-lg md:text-xl"
         >
           {formatMonthYear(currentMonth)}
         </button>
@@ -49,7 +49,7 @@ export function CalendarHeader({
       </div>
 
       {recordCount > 0 && (
-        <span className="rounded-full bg-pastel-pink px-3 py-1 text-xs font-semibold text-coral-dark">
+        <span className="shrink-0 whitespace-nowrap rounded-full bg-pastel-pink px-2 py-1 text-[10px] font-semibold text-coral-dark sm:px-3 sm:text-xs">
           이번 달 {recordCount}건
         </span>
       )}

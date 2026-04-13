@@ -21,7 +21,7 @@ export default function CalendarPage() {
   } = useUIStore();
 
   return (
-    <div className="px-4 py-6">
+    <div className="min-w-0 overflow-x-hidden px-2 py-6 sm:px-4">
       <Calendar />
       <FAB />
 

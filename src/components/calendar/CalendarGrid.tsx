@@ -25,12 +25,12 @@ export function CalendarGrid({ calendarDays, records, onDateClick }: CalendarGri
   return (
     <div>
       {/* Day headers */}
-      <div className="grid grid-cols-7 mb-1">
+      <div className="mb-1 grid min-w-0 grid-cols-7">
         {DAY_NAMES.map((name, i) => (
           <div
             key={name}
             className={`
-              py-2 text-center text-xs font-semibold md:text-sm
+              min-w-0 truncate py-2 text-center text-[10px] font-semibold sm:text-xs md:text-sm
               ${i === 0 ? 'text-coral' : i === 6 ? 'text-blue-400' : 'text-text-secondary'}
             `}
           >
@@ -40,9 +40,9 @@ export function CalendarGrid({ calendarDays, records, onDateClick }: CalendarGri
       </div>
 
       {/* Calendar cells */}
-      <div className="grid grid-cols-7 gap-px rounded-2xl bg-gray-100/50 overflow-hidden">
+      <div className="grid min-w-0 grid-cols-7 gap-px overflow-hidden rounded-2xl bg-gray-100/50">
         {calendarDays.map((day) => (
-          <div key={day.dateString} className="bg-bg-primary">
+          <div key={day.dateString} className="min-w-0 bg-bg-primary">
             <CalendarCell
               day={day.isCurrentMonth ? day.date.getDate() : null}
               dateString={day.dateString}

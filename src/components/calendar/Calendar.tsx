@@ -13,7 +13,7 @@ export function Calendar() {
   const { openDetailSheet } = useUIStore();
 
   return (
-    <div className="mx-auto w-full max-w-3xl">
+    <div className="mx-auto w-full min-w-0 max-w-3xl">
       <CalendarHeader
         currentMonth={currentMonth}
         recordCount={records.length}
@@ -23,11 +23,11 @@ export function Calendar() {
       />
 
       {isLoading ? (
-        <div className="grid grid-cols-7 gap-px">
+        <div className="grid min-w-0 grid-cols-7 gap-px">
           {Array.from({ length: 35 }).map((_, i) => (
             <div
               key={i}
-              className="min-h-[48px] animate-pulse rounded-xl bg-gray-100 md:min-h-[64px] lg:min-h-[80px]"
+              className="h-[60px] shrink-0 animate-pulse rounded-xl bg-gray-100 md:h-[76px] lg:h-[96px]"
             />
           ))}
         </div>
