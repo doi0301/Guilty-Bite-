@@ -17,7 +17,7 @@ export function FoodSearch({ onSearch, initialValue = '' }: FoodSearchProps) {
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2 sm:space-y-3">
       <div className="relative">
         <svg
           className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-text-muted"
@@ -38,13 +38,15 @@ export function FoodSearch({ onSearch, initialValue = '' }: FoodSearchProps) {
         />
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="max-h-[7.5rem] overflow-y-auto overflow-x-hidden pr-0.5 [-webkit-overflow-scrolling:touch] sm:max-h-none sm:overflow-visible">
+        <div className="flex flex-wrap gap-1.5 sm:gap-2">
         {FOOD_PRESETS.map((preset) => (
           <button
             key={preset.keyword}
+            type="button"
             onClick={() => handleChange(preset.keyword)}
             className={`
-              rounded-full border px-3 py-1.5 text-xs font-medium transition
+              rounded-full border px-2.5 py-1 text-[11px] font-medium transition sm:px-3 sm:py-1.5 sm:text-xs
               ${query === preset.keyword
                 ? 'border-coral bg-coral/10 text-coral-dark'
                 : 'border-gray-200 bg-white text-text-secondary hover:border-coral-light hover:bg-pastel-pink/30'
@@ -54,6 +56,7 @@ export function FoodSearch({ onSearch, initialValue = '' }: FoodSearchProps) {
             {preset.emoji} {preset.keyword}
           </button>
         ))}
+        </div>
       </div>
     </div>
   );

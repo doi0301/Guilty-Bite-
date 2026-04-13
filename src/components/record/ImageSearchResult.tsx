@@ -23,7 +23,7 @@ export function ImageSearchResult({
 }: ImageSearchResultProps) {
   if (isLoading) {
     return (
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
         {Array.from({ length: 8 }).map((_, i) => (
           <div
             key={i}
@@ -56,7 +56,7 @@ export function ImageSearchResult({
 
   return (
     <div className="space-y-2">
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
       {images.map((image, index) => {
         const isSelected =
           selectedImage?.image_url === image.image_url;

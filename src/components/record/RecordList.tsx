@@ -19,7 +19,7 @@ export function RecordList({ date, onClose }: RecordListProps) {
 
   const dateObj = new Date(date + 'T00:00:00');
 
-  const handleDelete = async (record: typeof records[0]) => {
+  const handleDelete = async (record: (typeof records)[0]) => {
     if (!confirm('이 기록을 삭제할까요?')) return;
     setDeletingId(record.id);
     try {
@@ -30,55 +30,59 @@ export function RecordList({ date, onClose }: RecordListProps) {
   };
 
   return (
-    <div className="flex flex-col gap-4 p-5">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-bold text-text-primary">
-          {formatDayLabel(dateObj)}
-        </h2>
-        <button
-          onClick={onClose}
-          className="flex h-8 w-8 items-center justify-center rounded-full transition hover:bg-gray-100"
-        >
-          <svg className="h-5 w-5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+    <div className="flex min-h-0 flex-1 flex-col lg:flex-none">
+      <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-3 py-2 sm:px-5 sm:py-4 lg:flex-none lg:overflow-visible lg:p-5">
+        <div className="flex min-w-0 items-center justify-between gap-2">
+          <h2 className="min-w-0 truncate text-base font-bold text-text-primary sm:text-lg">
+            {formatDayLabel(dateObj)}
+          </h2>
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition hover:bg-gray-100"
+            aria-label="닫기"
+          >
+            <svg className="h-5 w-5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {isLoading ? (
+          <div className="space-y-3">
+            {[1, 2].map((i) => (
+              <div key={i} className="h-20 animate-pulse rounded-xl bg-gray-100" />
+            ))}
+          </div>
+        ) : records.length === 0 ? (
+          <div className="flex flex-col items-center gap-3 py-8 text-center">
+            <span className="text-4xl">🍽️</span>
+            <p className="text-sm text-text-muted">아직 기록이 없어요</p>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {records.map((record) => (
+              <RecordItem
+                key={record.id}
+                record={record}
+                onEdit={() => openEditForm(record)}
+                onDelete={() => handleDelete(record)}
+                isDeleting={deletingId === record.id}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Records */}
-      {isLoading ? (
-        <div className="space-y-3">
-          {[1, 2].map((i) => (
-            <div key={i} className="h-20 animate-pulse rounded-xl bg-gray-100" />
-          ))}
-        </div>
-      ) : records.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 py-8 text-center">
-          <span className="text-4xl">🍽️</span>
-          <p className="text-sm text-text-muted">아직 기록이 없어요</p>
-        </div>
-      ) : (
-        <div className="space-y-2">
-          {records.map((record) => (
-            <RecordItem
-              key={record.id}
-              record={record}
-              onEdit={() => openEditForm(record)}
-              onDelete={() => handleDelete(record)}
-              isDeleting={deletingId === record.id}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Add button */}
-      <button
-        onClick={() => openAddForm(date)}
-        className="w-full rounded-xl border-2 border-dashed border-coral-light py-3 text-sm font-semibold text-coral transition hover:border-coral hover:bg-pastel-pink/30"
-      >
-        + 기록 추가
-      </button>
+      <div className="shrink-0 border-t border-gray-100 bg-bg-primary px-3 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] sm:px-5 lg:border-t-0 lg:px-5 lg:pb-5 lg:pt-4">
+        <button
+          type="button"
+          onClick={() => openAddForm(date)}
+          className="w-full rounded-xl border-2 border-dashed border-coral-light py-3 text-sm font-semibold text-coral transition hover:border-coral hover:bg-pastel-pink/30"
+        >
+          + 기록 추가
+        </button>
+      </div>
     </div>
   );
 }

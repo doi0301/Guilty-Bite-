@@ -1,11 +1,56 @@
 'use client';
 
-import { FoodThumbnail } from './FoodThumbnail';
+import { useState } from 'react';
 import type { FoodRecord } from '@/types/record';
 
-/** 고정 셀 높이: 모바일 / 태블릿 / 데스크톱 */
 const CELL_HEIGHT =
   'h-[60px] md:h-[76px] lg:h-[96px]';
+
+function GridThumb({ record }: { record: FoodRecord }) {
+  const [hasError, setHasError] = useState(false);
+
+  if (hasError) {
+    return (
+      <div className="flex h-full min-h-0 w-full items-center justify-center rounded-sm bg-pastel-cream text-[10px]">
+        🍽️
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={record.thumbnail_url}
+      alt={record.food_name}
+      title={record.food_name}
+      className="h-full min-h-0 w-full rounded-sm object-cover"
+      loading="lazy"
+      onError={() => setHasError(true)}
+    />
+  );
+}
+
+function FullCellThumb({ record }: { record: FoodRecord }) {
+  const [hasError, setHasError] = useState(false);
+
+  if (hasError) {
+    return (
+      <div className="flex h-full w-full items-center justify-center rounded-md bg-pastel-cream text-sm">
+        🍽️
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={record.thumbnail_url}
+      alt={record.food_name}
+      title={record.food_name}
+      className="h-full w-full rounded-md object-cover"
+      loading="lazy"
+      onError={() => setHasError(true)}
+    />
+  );
+}
 
 interface CalendarCellProps {
   day: number | null;
@@ -28,8 +73,9 @@ export function CalendarCell({
     return <div className={`${CELL_HEIGHT} shrink-0`} aria-hidden />;
   }
 
-  const visibleRecords = records.slice(0, 3);
-  const extraCount = records.length - visibleRecords.length;
+  const n = records.length;
+  const showOverflowBadge = n > 4;
+  const extraCount = showOverflowBadge ? n - 3 : 0;
 
   return (
     <button
@@ -55,27 +101,41 @@ export function CalendarCell({
         {day}
       </span>
 
-      {visibleRecords.length > 0 && (
-        <div className="flex min-h-0 w-full max-w-full flex-1 items-center justify-center overflow-hidden px-0.5">
-          <div className="flex max-w-full items-center justify-center">
-            {visibleRecords.map((record, index) => (
-              <div
-                key={record.id}
-                className={index > 0 ? '-ml-1.5 shrink-0' : 'shrink-0'}
-              >
-                <FoodThumbnail
-                  thumbnailUrl={record.thumbnail_url}
-                  foodName={record.food_name}
-                  size="sm"
-                />
-              </div>
-            ))}
-            {extraCount > 0 && (
-              <span className="ml-0.5 shrink-0 text-[9px] font-semibold text-coral md:text-[10px]">
-                +{extraCount}
-              </span>
-            )}
+      {n === 1 && (
+        <div className="flex min-h-0 w-full flex-1 items-center justify-center overflow-hidden px-1 md:px-1.5">
+          <div className="aspect-square h-full max-h-full w-auto max-w-full overflow-hidden rounded-md">
+            <FullCellThumb record={records[0]} />
           </div>
+        </div>
+      )}
+
+      {n >= 2 && (
+        <div className="grid min-h-0 w-full flex-1 grid-cols-2 grid-rows-2 gap-0.5 px-1 md:gap-1 md:px-1.5">
+          {showOverflowBadge ? (
+            <>
+              <div className="min-h-0 min-w-0 overflow-hidden">
+                <GridThumb record={records[0]} />
+              </div>
+              <div className="min-h-0 min-w-0 overflow-hidden">
+                <GridThumb record={records[1]} />
+              </div>
+              <div className="min-h-0 min-w-0 overflow-hidden">
+                <GridThumb record={records[2]} />
+              </div>
+              <div
+                className="flex min-h-0 min-w-0 items-center justify-center rounded-sm bg-pastel-cream text-[8px] font-bold leading-none text-coral md:text-[9px] lg:text-[10px]"
+                title={`외 ${extraCount}건`}
+              >
+                +{extraCount}
+              </div>
+            </>
+          ) : (
+            records.slice(0, 4).map((record) => (
+              <div key={record.id} className="min-h-0 min-w-0 overflow-hidden">
+                <GridThumb record={record} />
+              </div>
+            ))
+          )}
         </div>
       )}
     </button>
